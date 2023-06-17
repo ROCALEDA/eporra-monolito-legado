@@ -6,6 +6,10 @@ También en la pantalla principal, el usuario podrá acceder a una lista de apos
 
 Cuando el usuario abre una carrera verá una pantalla de información de las apuestas asociadas a esta, mostrando por cada apuesta el valor, el nombre del apostador que la realizó y el competidor al que le apostó. Para una carrera, el usuario podrá incluir una o varias apuestas asociadas a un apostador de los existentes en el sistema. También debe tener opciones para editar o eliminar apuestas.
 
+# Ejecución
+
+Primero, leer requirements.txt. Teniendo el entorno de ejecución listo, desde raíz con CLI ejecutar `python __main__.py`. Hecho con Python 3.9
+
 # Proyecto original
 
 https://github.com/MISW-4101-Practicas/MISW4101-202211-Grupo021
