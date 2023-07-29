@@ -3,11 +3,12 @@ from src.modelo.competidor import Competidor
 from src.modelo.apostador import Apostador
 from src.modelo.apostador import Apuesta
 from src.modelo.declarative_base import engine, Base, session
-import requests
+from src.logica.api import CarreraAPI
 
 class EPorra():
 
     def __init__(self):
+        self.carrera_api = CarreraAPI()
         Base.metadata.create_all(engine)
         self.descripcion = "Descripción de la aplicación"
         self.competidores = []
@@ -20,24 +21,14 @@ class EPorra():
         return listaCarrreras """
     
     def darListaCarreras(self):
-        response = requests.get('https://miso-rocaleda.uc.r.appspot.com/races/')
-        if response.status_code == 200:
-            listaCarreras = response.json()
-            carreras_adaptadas = []
-            for carrera in listaCarreras:
-                carreras_adaptadas.append({
-                    'id': carrera['id'],
-                    'nombre': carrera['name'],
-                    'estaTerminada': carrera['isFinished']
-                })
-            return carreras_adaptadas
-        else:
-            print(f"Error al obtener las carreras: {response.status_code}")
-            return None
+        return self.carrera_api.get_carreras()
     
     def darCarrera(self, id_carrera):
+        return self.carrera_api.get_carrera(id_carrera)
+    
+    """ def darCarrera(self, id_carrera):
         carrera = session.query(Carrera).get(id_carrera)
-        return carrera
+        return carrera """
         
     def darUltimaCarrera(self):
         carrera = session.query(Carrera).order_by(Carrera.id.desc()).first()
