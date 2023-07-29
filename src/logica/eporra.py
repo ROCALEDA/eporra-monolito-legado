@@ -3,7 +3,7 @@ from src.modelo.competidor import Competidor
 from src.modelo.apostador import Apostador
 from src.modelo.apostador import Apuesta
 from src.modelo.declarative_base import engine, Base, session
-
+import requests
 
 class EPorra():
 
@@ -15,9 +15,25 @@ class EPorra():
     def darDescripcionAplicacion(self):
         return self.descripcion
     
-    def darListaCarreras(self):
+    """ def darListaCarreras(self):
         listaCarrreras = [elem.__dict__ for elem in session.query(Carrera).order_by(Carrera.nombre).all()]
-        return listaCarrreras
+        return listaCarrreras """
+    
+    def darListaCarreras(self):
+        response = requests.get('https://miso-rocaleda.uc.r.appspot.com/races/')
+        if response.status_code == 200:
+            listaCarreras = response.json()
+            carreras_adaptadas = []
+            for carrera in listaCarreras:
+                carreras_adaptadas.append({
+                    'id': carrera['id'],
+                    'nombre': carrera['name'],
+                    'estaTerminada': carrera['isFinished']
+                })
+            return carreras_adaptadas
+        else:
+            print(f"Error al obtener las carreras: {response.status_code}")
+            return None
     
     def darCarrera(self, id_carrera):
         carrera = session.query(Carrera).get(id_carrera)
