@@ -2,8 +2,11 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from src.logica.eporra import EPorra
 from src.vista.InterfazEPorra import App_EPorra
+from dotenv import load_dotenv
 #from src.logica.Logica_mock import Logica_mock
 if __name__ == '__main__':
+    # cargar variables de entorno
+    load_dotenv()
     # Punto inicial de la aplicación
 
     #logica = Logica_mock()

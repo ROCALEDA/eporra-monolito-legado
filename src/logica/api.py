@@ -1,15 +1,12 @@
 import os
-from dotenv import load_dotenv
 import requests
-
-load_dotenv() 
 
 class CarreraAPI():
     def __init__(self):
         self.base_url = os.getenv('URL_BASE')
 
     def get_carreras(self):
-        url = self.base_url + 'races/'
+        url = self.base_url + 'races'
         response = requests.get(url)
         if response.status_code == 200:
             listaCarreras = response.json()
@@ -17,8 +14,8 @@ class CarreraAPI():
             for carrera in listaCarreras:
                 carreras_adaptadas.append({
                     'id': carrera['id'],
-                    'nombre': carrera['name'],
-                    'estaTerminada': carrera['isFinished']
+                    'nombre': carrera['nombre'],
+                    'estaTerminada': carrera['estaTerminada']
                 })
             return carreras_adaptadas
         else:
@@ -32,8 +29,8 @@ class CarreraAPI():
             carrera = response.json()
             return {
                 'id': carrera['id'],
-                'nombre': carrera['name'],
-                'estaTerminada': carrera['isFinished']
+                'nombre': carrera['nombre'],
+                'estaTerminada': carrera['estaTerminada']
             }
         else:
             print(f"Error al obtener la carrera: {response.status_code}")
