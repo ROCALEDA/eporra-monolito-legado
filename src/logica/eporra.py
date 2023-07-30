@@ -3,11 +3,12 @@ from src.modelo.competidor import Competidor
 from src.modelo.apostador import Apostador
 from src.modelo.apostador import Apuesta
 from src.modelo.declarative_base import engine, Base, session
-
+from src.logica.api import CarreraAPI
 
 class EPorra():
 
     def __init__(self):
+        self.carrera_api = CarreraAPI()
         Base.metadata.create_all(engine)
         self.descripcion = "Descripción de la aplicación"
         self.competidores = []
@@ -16,12 +17,15 @@ class EPorra():
         return self.descripcion
     
     def darListaCarreras(self):
-        listaCarrreras = [elem.__dict__ for elem in session.query(Carrera).order_by(Carrera.nombre).all()]
-        return listaCarrreras
+        return self.carrera_api.get_carreras()
     
     def darCarrera(self, id_carrera):
-        carrera = session.query(Carrera).get(id_carrera)
-        return carrera
+        api_get_race = self.carrera_api.get_carrera(id_carrera)
+        return {
+          "id": api_get_race["id"],
+          "nombre": api_get_race["nombre"],
+          "estaTerminada": api_get_race["estaTerminada"]
+        }
         
     def darUltimaCarrera(self):
         carrera = session.query(Carrera).order_by(Carrera.id.desc()).first()
@@ -48,7 +52,7 @@ class EPorra():
     def eliminarCarrera(self, idCarrera = 0):
         if idCarrera == 0:
             return False
-        carreraAEliminar = self.darCarrera(idCarrera)
+        carreraAEliminar = session.query(Carrera).get(idCarrera)
         if carreraAEliminar is None:
             return False
         carreraC = self.darApuestasCarrera(idCarrera)
@@ -175,8 +179,8 @@ class EPorra():
         return gananciasApostadores, gananciasCasa
     
     def terminarCarrera(self, idCarrera):
-        carrera = self.darCarrera(idCarrera)
-        carrera.estaTerminada = True
+        carrera = session.query(Carrera).get(idCarrera)
+        carrera.estaTerminada = True # ALERT!
         session.commit()
         return True
 

@@ -108,7 +108,7 @@ class App_EPorra(QApplication):
         Esta función muestra las apuestas de una carrera
         """
         self.carrera_actual = id_carrera
-        nombre_carrera = self.logica.darCarrera(id_carrera).nombre
+        nombre_carrera = self.logica.darCarrera(id_carrera)["nombre"]
         self.vista_lista_apuestas=Vista_lista_apuestas(self)
         self.vista_lista_apuestas.mostrar_apuestas(nombre_carrera, self.logica.darApuestasCarrera(id_carrera))
 
@@ -123,14 +123,14 @@ class App_EPorra(QApplication):
         Esta función crea una nueva apuesta asociada a una carrera
         """
         self.logica.crearApuesta(apostador, self.carrera_actual, valor, competidor)
-        nombre_carrera = self.logica.darCarrera(self.carrera_actual).nombre
+        nombre_carrera = self.logica.darCarrera(self.carrera_actual)["nombre"]
         self.vista_lista_apuestas.mostrar_apuestas(nombre_carrera, self.logica.darApuestasCarrera(self.carrera_actual))
 
     def editar_apuesta(self, id_apuesta, competidor, valor, apostador):
         """
         Esta función edita una apuesta asociada a una carrera
         """
-        nombre_carrera = self.logica.darCarrera(self.carrera_actual).nombre
+        nombre_carrera = self.logica.darCarrera(self.carrera_actual)["nombre"]
         self.logica.editarApuesta(id_apuesta, apostador, nombre_carrera, valor, competidor)
         self.vista_lista_apuestas.mostrar_apuestas(nombre_carrera, self.logica.darApuestasCarrera(self.carrera_actual))
 
@@ -162,7 +162,7 @@ class App_EPorra(QApplication):
         Esta función elimina una apuesta
         """
         resultado = self.logica.eliminar_apuesta(self.carrera_actual, id_apuesta)
-        nombre_carrera = self.logica.darCarrera(self.carrera_actual).nombre
+        nombre_carrera = self.logica.darCarrera(self.carrera_actual)["nombre"]
         self.vista_lista_apuestas.mostrar_apuestas(nombre_carrera, self.logica.darApuestasCarrera(self.carrera_actual))
     
     def mostrar_carrera(self, id_carrera=-1):
@@ -172,7 +172,7 @@ class App_EPorra(QApplication):
         self.carrera_actual = id_carrera
         if id_carrera != -1:
             self.vista_carrera = Vista_carrera(self)
-            nombre_carrera = self.logica.darCarrera(self.carrera_actual).nombre
+            nombre_carrera = self.logica.darCarrera(self.carrera_actual)["nombre"]
             self.vista_carrera.mostrar_competidores(nombre_carrera, self.logica.darListaCompetidores(self.carrera_actual))
         else:
             self.vista_carrera = Vista_carrera(self)
@@ -183,6 +183,6 @@ class App_EPorra(QApplication):
         Esta función inserta un nuevo competidor en una carrera
         """
         self.logica.crearCompetidor(self.carrera_actual, nombre, probabilidad)
-        nombre_carrera = self.logica.darCarrera(self.carrera_actual).nombre
+        nombre_carrera = self.logica.darCarrera(self.carrera_actual)["nombre"]
         self.vista_carrera.mostrar_competidores(nombre_carrera, self.logica.darListaCompetidores(self.carrera_actual))# no parece ser necesaria?
 

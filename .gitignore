@@ -50,6 +50,8 @@ MANIFEST
 .venv*/
 eporra-env/*
 venv/*
+env
+.env
 
 #Excluir locales
 env/*
